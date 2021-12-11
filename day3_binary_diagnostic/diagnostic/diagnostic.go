@@ -30,26 +30,25 @@ zerosCounter would be:
 // mostCommonBit[i] returns the most  common bit in the index i of all the binary
 // numbers of the input data
 
-func flipBit(c rune) byte {
+func flipBit(c byte) byte {
 	if c == '0' {
 		return '1'
 	}
 	return '0'
 }
 
-func flipBits(input string) []byte {
-	flippedBits := make([]byte, len(input))
+func flipBits(binNum string) []byte {
+	flippedBits := make([]byte, len(binNum))
 
-	for i, v := range input {
-		flippedBits[i] = flipBit(v)
+	for i, v := range binNum {
+		flippedBits[i] = flipBit(byte(v))
 	}
 	return flippedBits
 }
 
-func ProcessBinaryNumbers(binaryNumbers []string) (gammaRate int64, epsilonRate int64) {
+func getZerosCounter(binaryNumbers []string) []int {
 	nBitsPerNumber := len(binaryNumbers[0])
 	zerosCounter := make([]int, nBitsPerNumber)
-	var mostCommonBit strings.Builder
 
 	for _, binaryNumber := range binaryNumbers {
 		for i, bit := range binaryNumber {
@@ -58,8 +57,13 @@ func ProcessBinaryNumbers(binaryNumbers []string) (gammaRate int64, epsilonRate 
 			}
 		}
 	}
+	return zerosCounter
+}
 
+func getGammaRateBinary(binaryNumbers []string) string {
+	zerosCounter := getZerosCounter(binaryNumbers)
 	nBinaryNumbers := len(binaryNumbers)
+	var mostCommonBit strings.Builder
 
 	for _, nZerosAtPosI := range zerosCounter {
 		nOnesAtPosI := nBinaryNumbers - nZerosAtPosI
@@ -71,8 +75,11 @@ func ProcessBinaryNumbers(binaryNumbers []string) (gammaRate int64, epsilonRate 
 		}
 	}
 
-	gammaRateBinary := mostCommonBit.String()
+	return mostCommonBit.String()
+}
 
+func ProcessBinaryNumbers(binaryNumbers []string) (gammaRate int64, epsilonRate int64) {
+	gammaRateBinary := getGammaRateBinary(binaryNumbers)
 	gammaRate, err := strconv.ParseInt(gammaRateBinary, 2, 64)
 	if err != nil {
 		fmt.Println(err)
@@ -80,7 +87,6 @@ func ProcessBinaryNumbers(binaryNumbers []string) (gammaRate int64, epsilonRate 
 	}
 
 	epsilonRateBinary := flipBits(gammaRateBinary)
-
 	epsilonRate, err = strconv.ParseInt(string(epsilonRateBinary), 2, 64)
 	if err != nil {
 		fmt.Println(err)
