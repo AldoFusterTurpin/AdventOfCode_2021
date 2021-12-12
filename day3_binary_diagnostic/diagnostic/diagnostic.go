@@ -6,6 +6,24 @@ import (
 	"strings"
 )
 
+func ProcessBinaryNumbers(binaryNumbers []string) (gammaRate int64, epsilonRate int64) {
+	gammaRateBinary := getMostCommonBit(binaryNumbers)
+	gammaRate, err := strconv.ParseInt(gammaRateBinary, 2, 64)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	epsilonRateBinary := flipBits(gammaRateBinary)
+	epsilonRate, err = strconv.ParseInt(string(epsilonRateBinary), 2, 64)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	return gammaRate, epsilonRate
+}
+
 func flipBit(c byte) byte {
 	if c == '0' {
 		return '1'
@@ -63,112 +81,4 @@ func getMostCommonBit(binaryNumbers []string) string {
 	}
 
 	return mostCommonBit.String()
-}
-
-func ProcessBinaryNumbers(binaryNumbers []string) (gammaRate int64, epsilonRate int64) {
-	gammaRateBinary := getMostCommonBit(binaryNumbers)
-	gammaRate, err := strconv.ParseInt(gammaRateBinary, 2, 64)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	epsilonRateBinary := flipBits(gammaRateBinary)
-	epsilonRate, err = strconv.ParseInt(string(epsilonRateBinary), 2, 64)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	return gammaRate, epsilonRate
-}
-
-func filterNumbersWithBitToKeepAtIndexI(bitToKeep rune, i int, numbersToFilter []string) []string {
-	var filteredElements []string
-	for _, number := range numbersToFilter {
-		if number[i] == byte(bitToKeep) {
-			filteredElements = append(filteredElements, number)
-		}
-	}
-	return filteredElements
-}
-
-func getOxygenGeneratorRating(binaryNumbers []string) int64 {
-	nBitsPerNumber := len(binaryNumbers[0])
-
-	for i := 0; i < nBitsPerNumber; i++ {
-		zerosCounter := getZerosCounter(binaryNumbers)
-		nBinaryNumbers := len(binaryNumbers)
-		nZerosAtPosI := zerosCounter[i]
-		nOnesAtPosI := nBinaryNumbers - nZerosAtPosI
-
-		var bitToKeep rune
-		if nZerosAtPosI > nOnesAtPosI {
-			bitToKeep = '0'
-		} else {
-			bitToKeep = '1'
-		}
-
-		binaryNumbers = filterNumbersWithBitToKeepAtIndexI(bitToKeep, i, binaryNumbers)
-		if len(binaryNumbers) == 1 {
-			fmt.Println("filteredElements", binaryNumbers)
-			break
-		}
-	}
-	oxygenGeneratorRating, _ := strconv.ParseInt(binaryNumbers[0], 2, 64)
-	return oxygenGeneratorRating
-}
-
-func getCO2ScrubberRating(binaryNumbers []string) int64 {
-	nBitsPerNumber := len(binaryNumbers[0])
-
-	for i := 0; i < nBitsPerNumber; i++ {
-		zerosCounter := getZerosCounter(binaryNumbers)
-		nBinaryNumbers := len(binaryNumbers)
-		nZerosAtPosI := zerosCounter[i]
-		nOnesAtPosI := nBinaryNumbers - nZerosAtPosI
-
-		var bitToKeep rune
-		if nZerosAtPosI <= nOnesAtPosI {
-			bitToKeep = '0'
-		} else {
-			bitToKeep = '1'
-		}
-
-		binaryNumbers = filterNumbersWithBitToKeepAtIndexI(bitToKeep, i, binaryNumbers)
-		if len(binaryNumbers) == 1 {
-			break
-		}
-	}
-	CO2ScrubberRating, _ := strconv.ParseInt(binaryNumbers[0], 2, 64)
-	return CO2ScrubberRating
-}
-
-// func getCO2ScrubberRatingOld(binaryNumbers []string) int64 {
-// 	nBinaryNumbers := len(binaryNumbers)
-// 	zerosCounter := getZerosCounter(binaryNumbers)
-
-// 	for i, nZerosAtPosI := range zerosCounter {
-// 		nOnesAtPosI := nBinaryNumbers - nZerosAtPosI
-
-// 		var bitToKeep rune
-// 		if nZerosAtPosI <= nOnesAtPosI {
-// 			bitToKeep = '0'
-// 		} else {
-// 			bitToKeep = '1'
-// 		}
-
-// 		binaryNumbers = filterNumbersWithBitToKeepAtIndexI(bitToKeep, i, binaryNumbers)
-// 		if len(binaryNumbers) == 1 {
-// 			break
-// 		}
-// 	}
-// 	CO2ScrubberRating, _ := strconv.ParseInt(binaryNumbers[0], 2, 64)
-// 	return CO2ScrubberRating
-// }
-
-func GetOxygenGeneratorRatingAndCO2ScrubberRating(binaryNumbers []string) (int64, int64) {
-	o := getOxygenGeneratorRating(binaryNumbers)
-	co2 := getCO2ScrubberRating(binaryNumbers)
-	return o, co2
 }
