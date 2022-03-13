@@ -87,37 +87,9 @@ func processBoards(x int, boards []Board, boardsInfo []BoardInfo) (int, int) {
 // 	}
 // }
 
-func isRowMarked(boardInfo BoardInfo, rowI int) bool {
-	row := boardInfo.MarkedPositions[rowI]
-
-	for _, isCellMarked := range row {
-		if !isCellMarked {
-			return false
-		}
-	}
-	return true
-}
-
-func isColumnMarked(boardInfo BoardInfo, columnI int) bool {
-	nRows := len(boardInfo.MarkedPositions)
-
-	for j := 0; j < nRows; j++ {
-		isCellMarked := boardInfo.MarkedPositions[j][columnI]
-		if !isCellMarked {
-			return false
-		}
-	}
-
-	return true
-}
-
 func calculateBoardScore(x int, boardInfo BoardInfo) int {
 	fmt.Println("x:", x)
 	return x * boardInfo.SumOfUnmarkedPositions
-}
-
-func doesExistBingoInPos(boardInfo BoardInfo, row int, column int) bool {
-	return isColumnMarked(boardInfo, column) || isRowMarked(boardInfo, row)
 }
 
 func processBoard(x int, board Board, boardInfo *BoardInfo) (int, bool) {
