@@ -9,21 +9,6 @@ import (
 
 type Board [][]int
 
-// type PosInfo map[int]Position
-
-// type Position struct {
-// 	i int
-// 	j int
-// }
-
-type BoardInfo struct {
-	// MarkedPositions        PosInfo
-	// TODO: convert MarkedPossitions to a map[number][]Position so I can find in O(1)
-	// where is a number and mark it
-	MarkedPositions        [][]bool
-	SumOfUnmarkedPositions int
-}
-
 func ConvertRawInputToBoardsType(rawInput [][]string) []Board {
 	var boards []Board
 
@@ -49,13 +34,6 @@ func ConvertRawInputToBoardsType(rawInput [][]string) []Board {
 	return boards
 }
 
-func printBoardsInfo(boardsInfo []BoardInfo) {
-	fmt.Println("boardsInfo:")
-	for _, boardInfo := range boardsInfo {
-		fmt.Println(boardInfo)
-	}
-}
-
 func GetWinnerBoardAndScore(numbersToDraw []int, boards []Board) (winnerBoardIndex int, boardScore int) {
 	boardsInfo := createBoardsInfo(boards)
 
@@ -79,14 +57,6 @@ func processBoards(x int, boards []Board, boardsInfo []BoardInfo) (int, int) {
 	return -1, -1
 }
 
-// func findNumberAndUpdateBoardInfo(x int, board Board, boardInfo BoardInfo) {
-// 	for i, row := range board {
-// 		for j := range row {
-// 			if
-// 		}
-// 	}
-// }
-
 func calculateBoardScore(x int, boardInfo BoardInfo) int {
 	fmt.Println("x:", x)
 	return x * boardInfo.SumOfUnmarkedPositions
@@ -106,32 +76,4 @@ func processBoard(x int, board Board, boardInfo *BoardInfo) (int, bool) {
 		}
 	}
 	return -1, false
-}
-
-func createBoardsInfo(boards []Board) []BoardInfo {
-	boardsInfo := make([]BoardInfo, len(boards))
-
-	for i, board := range boards {
-		boardsInfo[i] = createBoardInfo(board, i)
-	}
-
-	return boardsInfo
-}
-
-func createBoardInfo(board Board, boardIndex int) BoardInfo {
-	nRows := len(board)
-	boardInfo := BoardInfo{
-		MarkedPositions:        make([][]bool, nRows),
-		SumOfUnmarkedPositions: 0,
-	}
-
-	for i, row := range board {
-		for _, value := range row {
-			nCols := len(row)
-			boardInfo.MarkedPositions[i] = make([]bool, nCols)
-			boardInfo.SumOfUnmarkedPositions += value
-		}
-	}
-
-	return boardInfo
 }
