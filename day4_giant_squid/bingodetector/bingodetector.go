@@ -2,22 +2,21 @@
 // in a specific row or column
 package bingodetector
 
-// DoesExistBingoInRowOrColumn returns true if the whole row "row" is true
-// or the whole column "col" is true. Otherwise, it returns false.
-func DoesExistBingoInRowOrColumn(values [][]bool, row, col int) bool {
-	if row >= 0 && isRowMarked(values, row) {
-		return true
-	}
-
-	if col >= 0 && isColumnMarked(values, col) {
-		return true
-	}
-
-	return false
+type IDetector interface {
+	DoesExistBingoInRowOrColumn(values [][]bool, row, col int)
 }
 
-func isRowMarked(values [][]bool, rowIndex int) bool {
-	if rowIndex >= len(values) {
+type Detector struct {
+}
+
+// DoesExistBingoInRowOrColumn returns true if the whole row "row" is true
+// or the whole column "col" is true. Otherwise, it returns false.
+func (d Detector) DoesExistBingoInRowOrColumn(values [][]bool, row, col int) bool {
+	return d.isFullRowTrue(values, row) || d.isFullColumnTrue(values, col)
+}
+
+func (d Detector) isFullRowTrue(values [][]bool, rowIndex int) bool {
+	if rowIndex < 0 || rowIndex >= len(values) {
 		return false
 	}
 
@@ -30,9 +29,12 @@ func isRowMarked(values [][]bool, rowIndex int) bool {
 	return true
 }
 
-func isColumnMarked(values [][]bool, colIndex int) bool {
-	nRows := len(values)
+func (d Detector) isFullColumnTrue(values [][]bool, colIndex int) bool {
+	if colIndex < 0 {
+		return false
+	}
 
+	nRows := len(values)
 	for i := 0; i < nRows; i++ {
 		colsInRow := len(values[i])
 		if colIndex >= colsInRow {

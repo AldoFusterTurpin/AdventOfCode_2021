@@ -58,11 +58,6 @@ func processBoards(x int, boards []Board, boardsInfo []BoardInfo) (int, int) {
 	return -1, -1
 }
 
-func calculateBoardScore(x int, boardInfo BoardInfo) int {
-	fmt.Println("x:", x)
-	return x * boardInfo.SumOfUnmarkedPositions
-}
-
 func processBoard(x int, board Board, boardInfo *BoardInfo) (int, bool) {
 	for i, row := range board {
 		for j, value := range row {
@@ -77,4 +72,9 @@ func processBoard(x int, board Board, boardInfo *BoardInfo) (int, bool) {
 		}
 	}
 	return -1, false
+}
+
+func calculateBoardScore(x int, boardInfo BoardInfo) int {
+	fmt.Println("x:", x)
+	return x * boardInfo.SumOfUnmarkedPositions
 }

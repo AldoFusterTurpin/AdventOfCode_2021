@@ -113,7 +113,8 @@ func TestDoesExistBingoInRowOrColumn(t *testing.T) {
 	}
 
 	for name, tc := range tt {
-		got := bingodetector.DoesExistBingoInRowOrColumn(tc.markedPositions, tc.row, tc.col)
+		d := bingodetector.Detector{}
+		got := d.DoesExistBingoInRowOrColumn(tc.markedPositions, tc.row, tc.col)
 
 		if got != tc.expected {
 			t.Fatalf("%s: expected %v, but got: %v", name, tc.expected, got)
