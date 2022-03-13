@@ -3,14 +3,42 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"giant_squid/bingo"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 )
 
 func main() {
 	fileName := "input.txt"
-	file, err := os.Open(fileName)
+	numbersToDraw, rawBoards := getRawInput(fileName)
+
+	numsToDraw := convertSliceStringsToSliceInts(numbersToDraw)
+	boards := bingo.ConvertRawInputToBoardsType(rawBoards)
+
+	// printNumbersToDraw(numsToDraw)
+	// printBoards(boards)
+	winnerBoardIndex, boardScore := bingo.GetWinnerBoardAndScore(numsToDraw, boards)
+	fmt.Println("winnerBoardIndex:", winnerBoardIndex)
+	fmt.Println("boardScore:", boardScore)
+
+}
+
+func convertSliceStringsToSliceInts(slice []string) []int {
+	var r []int
+	for _, s := range slice {
+		x, err := strconv.Atoi(s)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		r = append(r, x)
+	}
+	return r
+}
+
+func getRawInput(filPath string) (numbersToDraw []string, boards [][]string) {
+	file, err := os.Open(filPath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -19,12 +47,9 @@ func main() {
 	scanner := bufio.NewScanner(file)
 
 	scanner.Scan()
-	randomNumbers := scanner.Text()
-	fmt.Println("randomNumbers:")
-	fmt.Println(randomNumbers)
+	numbersToDraw = strings.Split(scanner.Text(), ",") // TODO convert numbersToDraw (type string) to type []int
 
 	scanner.Scan()
-	var boards [][]string
 	var board []string
 
 	var t string
@@ -51,11 +76,16 @@ func main() {
 		boards = append(boards, board)
 	}
 
-	for i, b := range boards {
-		fmt.Println("board", i)
-		for j, bb := range b {
-			fmt.Println("row", j, ":", bb)
-		}
-		fmt.Println()
+	return numbersToDraw, boards
+}
+
+func printBoards(boards []bingo.Board) {
+	for i, board := range boards {
+		fmt.Println("board", i, "is", board)
 	}
+}
+
+func printNumbersToDraw(numsToDraw []int) {
+	fmt.Println("numsToDraw:")
+	fmt.Println(numsToDraw)
 }
