@@ -9,6 +9,7 @@ import (
 
 type Board [][]int
 
+//TODO: split in more funcitons (don't want 3 fors in same function)
 func ConvertRawInputToBoardsType(rawInput [][]string) []Board {
 	var boards []Board
 
