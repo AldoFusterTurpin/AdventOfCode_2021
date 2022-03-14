@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"giant_squid/bingo"
+	"giant_squid/bingodetector"
 	"log"
 	"os"
 	"strconv"
@@ -17,12 +18,12 @@ func main() {
 	numsToDraw := convertSliceStringsToSliceInts(numbersToDraw)
 	boards := bingo.ConvertRawInputToBoardsType(rawBoards)
 
-	// printNumbersToDraw(numsToDraw)
-	// printBoards(boards)
-	winnerBoardIndex, boardScore := bingo.GetWinnerBoardAndScore(numsToDraw, boards)
-	fmt.Println("winnerBoardIndex:", winnerBoardIndex)
-	fmt.Println("boardScore:", boardScore)
+	bingoDetector := bingodetector.NewDetector()
+	bingoSolver := bingo.NewSolver(bingoDetector)
 
+	bingoWinnerIndex, score := bingoSolver.GetWinnerBoardAndScore(numsToDraw, boards)
+	fmt.Println("bingoWinnerIndex:", bingoWinnerIndex)
+	fmt.Println("score:", score)
 }
 
 func convertSliceStringsToSliceInts(slice []string) []int {
@@ -32,6 +33,7 @@ func convertSliceStringsToSliceInts(slice []string) []int {
 		if err != nil {
 			log.Fatalln(err)
 		}
+
 		r = append(r, x)
 	}
 	return r
@@ -69,7 +71,7 @@ func getRawInput(filPath string) (numbersToDraw []string, boards [][]string) {
 		}
 	}
 
-	//this line is key to be able to read all file even if there are
+	//this line is key to be able to read whole file even if there are
 	// extra blank lines at the end of the file. Boards holds the value of the
 	// last iteration of the for loop
 	if len(board) > 0 {
@@ -77,15 +79,4 @@ func getRawInput(filPath string) (numbersToDraw []string, boards [][]string) {
 	}
 
 	return numbersToDraw, boards
-}
-
-func printBoards(boards []bingo.Board) {
-	for i, board := range boards {
-		fmt.Println("board", i, "is", board)
-	}
-}
-
-func printNumbersToDraw(numsToDraw []int) {
-	fmt.Println("numsToDraw:")
-	fmt.Println(numsToDraw)
 }

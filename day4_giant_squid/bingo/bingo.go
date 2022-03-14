@@ -1,11 +1,22 @@
+// bingo package is responsible for solving a bingo
 package bingo
 
 import (
-	"fmt"
+	"giant_squid/bingodetector"
 	"log"
 	"strconv"
 	"strings"
 )
+
+type Solver struct {
+	bingoDetector bingodetector.IDetector
+}
+
+func NewSolver(bd bingodetector.IDetector) Solver {
+	return Solver{
+		bingoDetector: bd,
+	}
+}
 
 type Board [][]int
 
@@ -35,22 +46,25 @@ func ConvertRawInputToBoardsType(rawInput [][]string) []Board {
 	return boards
 }
 
-func GetWinnerBoardAndScore(numbersToDraw []int, boards []Board) (winnerBoardIndex int, boardScore int) {
+// GetWinnerBoardAndScore returns wich board has won the bigno and with which score.
+func (bs Solver) GetWinnerBoardAndScore(numbersToDraw []int, boards []Board) (winnerBoardIndex int, boardScore int) {
 	boardsInfo := createBoardsInfo(boards)
 
 	for _, x := range numbersToDraw {
-		winnerBoardIndex, boardScore = processBoards(x, boards, boardsInfo)
+		winnerBoardIndex, boardScore = bs.processBoards(x, boards, boardsInfo)
 		if winnerBoardIndex != -1 {
-			return winnerBoardIndex + 1, boardScore
+			return winnerBoardIndex, boardScore
 		}
 	}
 
 	return winnerBoardIndex, boardScore
 }
 
-func processBoards(x int, boards []Board, boardsInfo []BoardInfo) (int, int) {
+// processBoards returns the index of the winning board and the boardScore
+// in case any board wins
+func (bs Solver) processBoards(x int, boards []Board, boardsInfo []BoardInfo) (int, int) {
 	for i := range boardsInfo {
-		boardScore, isBoardWinner := processBoard(x, boards[i], &boardsInfo[i])
+		boardScore, isBoardWinner := bs.processBoard(x, boards[i], &boardsInfo[i])
 		if isBoardWinner {
 			return i, boardScore
 		}
@@ -58,15 +72,18 @@ func processBoards(x int, boards []Board, boardsInfo []BoardInfo) (int, int) {
 	return -1, -1
 }
 
-func processBoard(x int, board Board, boardInfo *BoardInfo) (int, bool) {
+// processBoard returns the score of the winning board and true in case any baord wins.
+// Otherwise returns -1 and false.
+func (bs Solver) processBoard(x int, board Board, boardInfo *BoardInfo) (int, bool) {
 	for i, row := range board {
 		for j, value := range row {
 			if value == x {
 				boardInfo.MarkedPositions[i][j] = true
 				boardInfo.SumOfUnmarkedPositions -= x
 
-				if doesExistBingoInPos(*boardInfo, j, i) {
-					return calculateBoardScore(x, *boardInfo), true
+				booleanMatrix := boardInfo.MarkedPositions
+				if bs.bingoDetector.DoesExistBingoInRowOrColumn(booleanMatrix, i, j) {
+					return bs.calculateBoardScore(x, *boardInfo), true
 				}
 			}
 		}
@@ -74,7 +91,6 @@ func processBoard(x int, board Board, boardInfo *BoardInfo) (int, bool) {
 	return -1, false
 }
 
-func calculateBoardScore(x int, boardInfo BoardInfo) int {
-	fmt.Println("x:", x)
-	return x * boardInfo.SumOfUnmarkedPositions
+func (bs Solver) calculateBoardScore(lastPickedNumber int, boardInfo BoardInfo) int {
+	return lastPickedNumber * boardInfo.SumOfUnmarkedPositions
 }

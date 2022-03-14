@@ -1,12 +1,17 @@
-// bingodetector is responsible for detecting if exists bingo in a board
-// in a specific row or column
 package bingodetector
 
+// IDetector is responsible for detecting if exists bingo in a board
+// in a specific row or column
 type IDetector interface {
-	DoesExistBingoInRowOrColumn(values [][]bool, row, col int)
+	DoesExistBingoInRowOrColumn(values [][]bool, row, col int) bool
 }
 
+// Detector is a struct that implements IDetector
 type Detector struct {
+}
+
+func NewDetector() Detector {
+	return Detector{}
 }
 
 // DoesExistBingoInRowOrColumn returns true if the whole row "row" is true

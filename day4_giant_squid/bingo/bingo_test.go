@@ -2,10 +2,11 @@ package bingo_test
 
 import (
 	"giant_squid/bingo"
+	"giant_squid/bingodetector"
 	"testing"
 )
 
-func TestGetWinnerBoardAndScore(t *testing.T) {
+func TestBingoSolver_GetWinnerBoardAndScore(t *testing.T) {
 	tests := map[string]struct {
 		inputBoards              []bingo.Board
 		numbersToDraw            []int
@@ -36,18 +37,22 @@ func TestGetWinnerBoardAndScore(t *testing.T) {
 					{2, 0, 12, 3, 7},
 				},
 			},
+			numbersToDraw:            []int{7, 4, 9, 5, 11, 17, 23, 2, 0, 14, 21, 24, 10, 16, 13, 6, 15, 25, 12, 22, 18, 20, 8, 19, 3, 26, 1},
 			expectedWinnerBingoIndex: 2,
 			expectedScore:            4512,
 		},
 	}
 
 	for name, tc := range tests {
-		bingoWinnerIndex, score := bingo.GetWinnerBoardAndScore(tc.numbersToDraw, tc.inputBoards)
+		bingoDetector := bingodetector.NewDetector()
+		bingoSolver := bingo.NewSolver(bingoDetector)
+
+		bingoWinnerIndex, score := bingoSolver.GetWinnerBoardAndScore(tc.numbersToDraw, tc.inputBoards)
 		if bingoWinnerIndex != tc.expectedWinnerBingoIndex {
-			t.Fatalf("%s: expected %v, but got: %v", name, tc.expectedWinnerBingoIndex, bingoWinnerIndex)
+			t.Fatalf("%s: expected bingoWinnerIndex %v, but got: %v", name, tc.expectedWinnerBingoIndex, bingoWinnerIndex)
 		}
 		if score != tc.expectedScore {
-			t.Fatalf("%s: expected %v, but got: %v", name, tc.expectedScore, score)
+			t.Fatalf("%s: expected score %v, but got: %v", name, tc.expectedScore, score)
 		}
 	}
 }

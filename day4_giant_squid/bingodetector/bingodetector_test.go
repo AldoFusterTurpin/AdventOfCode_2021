@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestDoesExistBingoInRowOrColumn(t *testing.T) {
+func TestDetector_DoesExistBingoInRowOrColumn(t *testing.T) {
 	tt := map[string]struct {
 		markedPositions [][]bool
 		row, col        int

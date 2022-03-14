@@ -1,20 +1,8 @@
 package bingo
 
-import "fmt"
-
 type BoardInfo struct {
-	// MarkedPositions        PosInfo
-	// TODO: convert MarkedPossitions to a map[number][]Position so I can find in O(1)
-	// where is a number and mark it
 	MarkedPositions        [][]bool
 	SumOfUnmarkedPositions int
-}
-
-func printBoardsInfo(boardsInfo []BoardInfo) {
-	fmt.Println("boardsInfo:")
-	for _, boardInfo := range boardsInfo {
-		fmt.Println(boardInfo)
-	}
 }
 
 func createBoardsInfo(boards []Board) []BoardInfo {
