@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	fileName := "input.txt"
+	fileName := "input_example.txt"
 	numbersToDraw, rawBoards := getRawInput(fileName)
 
 	numsToDraw := convertSliceStringsToSliceInts(numbersToDraw)
@@ -21,7 +21,7 @@ func main() {
 	bingoDetector := bingodetector.NewDetector()
 	bingoSolver := bingo.NewSolver(bingoDetector)
 
-	bingoWinnerIndex, score := bingoSolver.GetWinnerBoardAndScore(numsToDraw, boards)
+	bingoWinnerIndex, score := bingoSolver.GetFirstWinnerBoardAndScore(numsToDraw, boards)
 	fmt.Println("bingoWinnerIndex:", bingoWinnerIndex)
 	fmt.Println("score:", score)
 }
