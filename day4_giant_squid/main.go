@@ -15,7 +15,7 @@ func main() {
 	// bingoDetector := bingo.NewDetector()
 	// bingoSolver := bingo.NewFirstWinnerBoardFinder(bingoDetector)
 
-	bingoWinnerIndex, score := bingo.GetFirstWinnerBoardAndScore(numsToDraw, boards)
+	bingoWinnerIndex, score := bingo.GetWinnerBoardAndScore(numsToDraw, boards)
 	fmt.Println("bingoWinnerIndex:", bingoWinnerIndex)
 	fmt.Println("score:", score)
 }

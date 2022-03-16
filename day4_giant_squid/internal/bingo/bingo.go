@@ -3,8 +3,8 @@ package bingo
 
 type Board [][]int
 
-// GetFirstWinnerBoardAndScore returns wich board has won the bingo and with which score.
-func GetFirstWinnerBoardAndScore(numbersToDraw []int, boards []Board) (winnerBoardIndex int, boardScore int) {
+// GetWinnerBoardAndScore returns wich board has won the bingo and with which score.
+func GetWinnerBoardAndScore(numbersToDraw []int, boards []Board) (winnerBoardIndex int, boardScore int) {
 	boardsInfo := createBoardsInfo(boards)
 
 	for _, x := range numbersToDraw {
