@@ -3,8 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"giant_squid/bingo"
-	"giant_squid/bingodetector"
+	"giant_squid/internal/bingo"
 	"log"
 	"os"
 	"strconv"
@@ -18,8 +17,8 @@ func main() {
 	numsToDraw := convertSliceStringsToSliceInts(numbersToDraw)
 	boards := bingo.ConvertRawInputToBoardsType(rawBoards)
 
-	bingoDetector := bingodetector.NewDetector()
-	bingoSolver := bingo.NewSolver(bingoDetector)
+	bingoDetector := bingo.NewDetector()
+	bingoSolver := bingo.NewFirstWinnerBoardFinder(bingoDetector)
 
 	bingoWinnerIndex, score := bingoSolver.GetFirstWinnerBoardAndScore(numsToDraw, boards)
 	fmt.Println("bingoWinnerIndex:", bingoWinnerIndex)

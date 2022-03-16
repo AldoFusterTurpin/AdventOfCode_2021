@@ -1,7 +1,7 @@
-package bingodetector_test
+package bingo_test
 
 import (
-	"giant_squid/bingodetector"
+	"giant_squid/internal/bingo"
 	"testing"
 )
 
@@ -113,7 +113,7 @@ func TestDetector_DoesExistBingoInRowOrColumn(t *testing.T) {
 	}
 
 	for name, tc := range tt {
-		d := bingodetector.Detector{}
+		d := bingo.Detector{}
 		got := d.DoesExistBingoInRowOrColumn(tc.markedPositions, tc.row, tc.col)
 
 		if got != tc.expected {
