@@ -17,10 +17,6 @@ func GetFirstWinnerBoardAndScore(numbersToDraw []int, boards []Board) (winnerBoa
 	return winnerBoardIndex, boardScore
 }
 
-func calculateBoardScore(lastPickedNumber int, boardInfo BoardInfo) int {
-	return lastPickedNumber * boardInfo.SumOfUnmarkedPositions
-}
-
 // DoesExistBingoInRowOrColumn returns true if the whole row "row" is true
 // or the whole column "col" is true. Otherwise, it returns false.
 func doesExistBingoInRowOrColumn(values [][]bool, row, col int) bool {
@@ -90,4 +86,8 @@ func doesBoardWin(x int, board Board, boardInfo *BoardInfo) (int, bool) {
 		}
 	}
 	return -1, false
+}
+
+func calculateBoardScore(lastPickedNumber int, boardInfo BoardInfo) int {
+	return lastPickedNumber * boardInfo.SumOfUnmarkedPositions
 }

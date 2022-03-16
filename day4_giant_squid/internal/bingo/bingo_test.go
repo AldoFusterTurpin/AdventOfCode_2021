@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestFirstWinnerBoardFinder_GetFirstWinnerBoardAndScore(t *testing.T) {
+func TestGetFirstWinnerBoardAndScore(t *testing.T) {
 	tests := map[string]struct {
 		inputBoards              []bingo.Board
 		numbersToDraw            []int
@@ -43,10 +43,7 @@ func TestFirstWinnerBoardFinder_GetFirstWinnerBoardAndScore(t *testing.T) {
 	}
 
 	for name, tc := range tests {
-		bingoDetector := bingo.NewDetector()
-		bingoSolver := bingo.NewFirstWinnerBoardFinder(bingoDetector)
-
-		bingoWinnerIndex, score := bingoSolver.GetFirstWinnerBoardAndScore(tc.numbersToDraw, tc.inputBoards)
+		bingoWinnerIndex, score := bingo.GetFirstWinnerBoardAndScore(tc.numbersToDraw, tc.inputBoards)
 		if bingoWinnerIndex != tc.expectedWinnerBingoIndex {
 			t.Fatalf("%s: expected bingoWinnerIndex %v, but got: %v", name, tc.expectedWinnerBingoIndex, bingoWinnerIndex)
 		}
