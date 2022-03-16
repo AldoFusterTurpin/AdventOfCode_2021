@@ -12,10 +12,10 @@ func main() {
 	numsToDraw := bingo.ConvertSliceStringsToSliceInts(numbersToDraw)
 	boards := bingo.ConvertRawInputToBoardsType(rawBoards)
 
-	bingoDetector := bingo.NewDetector()
-	bingoSolver := bingo.NewFirstWinnerBoardFinder(bingoDetector)
+	// bingoDetector := bingo.NewDetector()
+	// bingoSolver := bingo.NewFirstWinnerBoardFinder(bingoDetector)
 
-	bingoWinnerIndex, score := bingoSolver.GetFirstWinnerBoardAndScore(numsToDraw, boards)
+	bingoWinnerIndex, score := bingo.GetFirstWinnerBoardAndScore(numsToDraw, boards)
 	fmt.Println("bingoWinnerIndex:", bingoWinnerIndex)
 	fmt.Println("score:", score)
 }
