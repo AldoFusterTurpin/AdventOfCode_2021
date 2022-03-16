@@ -1,12 +1,11 @@
 package bingo_test
 
 import (
-	"giant_squid/bingo"
-	"giant_squid/bingodetector"
+	"giant_squid/internal/bingo"
 	"testing"
 )
 
-func TestBingoSolver_GetWinnerBoardAndScore(t *testing.T) {
+func TestFirstWinnerBoardFinder_GetFirstWinnerBoardAndScore(t *testing.T) {
 	tests := map[string]struct {
 		inputBoards              []bingo.Board
 		numbersToDraw            []int
@@ -44,10 +43,10 @@ func TestBingoSolver_GetWinnerBoardAndScore(t *testing.T) {
 	}
 
 	for name, tc := range tests {
-		bingoDetector := bingodetector.NewDetector()
-		bingoSolver := bingo.NewSolver(bingoDetector)
+		bingoDetector := bingo.NewDetector()
+		bingoSolver := bingo.NewFirstWinnerBoardFinder(bingoDetector)
 
-		bingoWinnerIndex, score := bingoSolver.GetWinnerBoardAndScore(tc.numbersToDraw, tc.inputBoards)
+		bingoWinnerIndex, score := bingoSolver.GetFirstWinnerBoardAndScore(tc.numbersToDraw, tc.inputBoards)
 		if bingoWinnerIndex != tc.expectedWinnerBingoIndex {
 			t.Fatalf("%s: expected bingoWinnerIndex %v, but got: %v", name, tc.expectedWinnerBingoIndex, bingoWinnerIndex)
 		}

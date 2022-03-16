@@ -1,4 +1,4 @@
-package bingodetector
+package bingo
 
 // IDetector is responsible for detecting if exists bingo in a board
 // in a specific row or column
