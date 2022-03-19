@@ -3,6 +3,7 @@ package bingo
 type BoardInfo struct {
 	MarkedPositions        [][]bool
 	SumOfUnmarkedPositions int
+	boardHasWon            bool
 }
 
 func createBoardsInfo(boards []Board) []BoardInfo {
@@ -20,6 +21,7 @@ func createBoardInfo(board Board, boardIndex int) BoardInfo {
 	boardInfo := BoardInfo{
 		MarkedPositions:        make([][]bool, nRows),
 		SumOfUnmarkedPositions: 0,
+		boardHasWon:            false,
 	}
 
 	for i, row := range board {
