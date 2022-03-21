@@ -2,14 +2,13 @@ package detector_test
 
 import (
 	"hydrothermalventure/internal/detector"
-	"reflect"
 	"testing"
 )
 
 func TestBuildVentsDiagram(t *testing.T) {
 	tests := map[string]struct {
-		pc              []detector.PairCoordinates
-		expectedDiagram []string
+		pc                                []detector.PairCoordinates
+		expectedNumberOfOverlappingPoints int
 	}{
 		"statement_sampe": {
 			pc: []detector.PairCoordinates{
@@ -45,27 +44,28 @@ func TestBuildVentsDiagram(t *testing.T) {
 					detector.Coordinate{X: 5, Y: 5},
 					detector.Coordinate{X: 8, Y: 2}},
 			},
-			expectedDiagram: []string{
-				".......1..",
-				"..1....1..",
-				"..1....1..",
-				".......1..",
-				".112111211",
-				"..........",
-				"..........",
-				"..........",
-				"..........",
-				"222111....",
-			},
+			// expectedDiagram: []string{
+			// 	".......1..",
+			// 	"..1....1..",
+			// 	"..1....1..",
+			// 	".......1..",
+			// 	".112111211",
+			// 	"..........",
+			// 	"..........",
+			// 	"..........",
+			// 	"..........",
+			// 	"222111....",
+			// },
+			expectedNumberOfOverlappingPoints: 5,
 		},
 	}
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			got := detector.BuildRepresentation(tc.pc)
+			got := detector.GetNumberOfOverlappingPoints(tc.pc, 2)
 
-			if !reflect.DeepEqual(got, tc.expectedDiagram) {
-				t.Errorf("%s: expected diagram %v, but got: %v", name, tc.expectedDiagram, got)
+			if got != tc.expectedNumberOfOverlappingPoints {
+				t.Errorf("%s: expected %v, but got: %v", name, tc.expectedNumberOfOverlappingPoints, got)
 			}
 		})
 	}
