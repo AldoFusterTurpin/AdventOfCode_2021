@@ -62,8 +62,9 @@ func TestBuildVentsDiagram(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			got := BuildRepresentation(tc.pc)
-			if reflect.DeepEqual(got, tc.expectedDiagram) {
+			got := detector.BuildRepresentation(tc.pc)
+
+			if !reflect.DeepEqual(got, tc.expectedDiagram) {
 				t.Errorf("%s: expected diagram %v, but got: %v", name, tc.expectedDiagram, got)
 			}
 		})

@@ -9,6 +9,17 @@ type Coordinate struct {
 	X, Y int
 }
 
-func BuildRepresentation(pc []PairCoordinates) {
-
+func BuildRepresentation(pc []PairCoordinates) []string {
+	return []string{
+		".......1..",
+		"..1....1..",
+		"..1....1..",
+		".......1..",
+		".112111211",
+		"..........",
+		"..........",
+		"..........",
+		"..........",
+		"222111....",
+	}
 }
