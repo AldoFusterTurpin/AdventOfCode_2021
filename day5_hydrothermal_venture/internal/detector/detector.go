@@ -13,6 +13,10 @@ func GetNumberOfOverlappingPoints(pc []PairCoordinates, overlappingTarget int) i
 	// key: a coordinate
 	// value: how many lines intersect at that point
 	representation := buildRepresentation(pc)
+	return calculateOverlappingPoints(representation, overlappingTarget)
+}
+
+func calculateOverlappingPoints(representation map[Coordinate]int, overlappingTarget int) int {
 	c := 0
 
 	for _, v := range representation {
@@ -36,16 +40,6 @@ func pairIsVertical(pc PairCoordinates) bool {
 	return pc.InitCoordinate.Y == pc.EndCoordinate.Y
 }
 
-// func iterateBetweenTwoCoordinates(c1 Coordinate, c Coordinate, representation map[Coordinate]int) {
-// 	for i := p.InitCoordinate.X; i < p.EndCoordinate.X; i++ {
-// 		p := Coordinate{
-// 			X: i,
-// 			Y: p.InitCoordinate.Y,
-// 		}
-// 		representation[p]++
-// 	}
-// }
-
 func buildRepresentation(pc []PairCoordinates) map[Coordinate]int {
 	representation := make(map[Coordinate]int)
 
@@ -60,25 +54,33 @@ func buildRepresentation(pc []PairCoordinates) map[Coordinate]int {
 
 func treatPair(p PairCoordinates, representation map[Coordinate]int) {
 	if pairIsHorizontal(p) {
-		start, end := getStartAndEnd(p.InitCoordinate.Y, p.EndCoordinate.Y)
-
-		for i := start; i <= end; i++ {
-			p := Coordinate{
-				X: p.InitCoordinate.X,
-				Y: i,
-			}
-			representation[p]++
-		}
+		buildHorizontalLine(p.InitCoordinate, p.EndCoordinate, representation)
 	} else {
-		start, end := getStartAndEnd(p.InitCoordinate.X, p.EndCoordinate.X)
+		buildVerticalLine(p.InitCoordinate, p.EndCoordinate, representation)
+	}
+}
 
-		for i := start; i <= end; i++ {
-			p := Coordinate{
-				X: i,
-				Y: p.InitCoordinate.Y,
-			}
-			representation[p]++
+func buildVerticalLine(initCoordinate Coordinate, endCoordinate Coordinate, representation map[Coordinate]int) {
+	start, end := getStartAndEnd(initCoordinate.X, endCoordinate.X)
+
+	for i := start; i <= end; i++ {
+		p := Coordinate{
+			X: i,
+			Y: initCoordinate.Y,
 		}
+		representation[p]++
+	}
+}
+
+func buildHorizontalLine(initCoordinate Coordinate, endCoordinate Coordinate, representation map[Coordinate]int) {
+	start, end := getStartAndEnd(initCoordinate.Y, endCoordinate.Y)
+
+	for i := start; i <= end; i++ {
+		p := Coordinate{
+			X: initCoordinate.X,
+			Y: i,
+		}
+		representation[p]++
 	}
 }
 
