@@ -9,6 +9,7 @@ func TestBuildVentsDiagram(t *testing.T) {
 	tests := map[string]struct {
 		pc                                []detector.PairCoordinates
 		expectedNumberOfOverlappingPoints int
+		rb                                detector.RepresentationBuilder
 	}{
 		"statement_sampe": {
 			pc: []detector.PairCoordinates{
@@ -57,12 +58,13 @@ func TestBuildVentsDiagram(t *testing.T) {
 			// 	"222111....",
 			// },
 			expectedNumberOfOverlappingPoints: 5,
+			rb:                                detector.HorizontalAndVerticalLinesBuilder{},
 		},
 	}
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			got := detector.GetNumberOfOverlappingPoints(tc.pc, 2)
+			got := detector.GetNumberOfOverlappingPoints(tc.pc, 2, tc.rb)
 
 			if got != tc.expectedNumberOfOverlappingPoints {
 				t.Errorf("%s: expected %v, but got: %v", name, tc.expectedNumberOfOverlappingPoints, got)

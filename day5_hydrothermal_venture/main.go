@@ -26,7 +26,9 @@ func main() {
 		pc := buildPairCoordinates(line)
 		s = append(s, pc)
 	}
-	fmt.Println(detector.GetNumberOfOverlappingPoints(s, 2))
+
+	rb := detector.HorizontalAndVerticalLinesBuilder{}
+	fmt.Println(detector.GetNumberOfOverlappingPoints(s, 2, rb))
 }
 
 func buildPairCoordinates(line string) detector.PairCoordinates {

@@ -9,10 +9,11 @@ type Coordinate struct {
 	X, Y int
 }
 
-func GetNumberOfOverlappingPoints(pc []PairCoordinates, overlappingTarget int) int {
+func GetNumberOfOverlappingPoints(pc []PairCoordinates, overlappingTarget int, rb RepresentationBuilder) int {
 	// key: a coordinate
 	// value: how many lines intersect at that point
-	representation := buildRepresentation(pc)
+	//representation := buildRepresentation(pc)
+	representation := rb.buildRepresentation(pc)
 	return calculateOverlappingPoints(representation, overlappingTarget)
 }
 
@@ -28,6 +29,26 @@ func calculateOverlappingPoints(representation map[Coordinate]int, overlappingTa
 	return c
 }
 
+// func buildRepresentation(pc []PairCoordinates) map[Coordinate]int {
+// 	representation := make(map[Coordinate]int)
+
+// 	for _, pair := range pc {
+// 		if pairIsHorizontalOrVertical(pair) {
+// 			treatPair(pair, representation)
+// 		}
+// 	}
+
+// 	return representation
+// }
+
+func treatPair(p PairCoordinates, representation map[Coordinate]int) {
+	if pairIsHorizontal(p) {
+		buildHorizontalLine(p.InitCoordinate, p.EndCoordinate, representation)
+	} else {
+		buildVerticalLine(p.InitCoordinate, p.EndCoordinate, representation)
+	}
+}
+
 func pairIsHorizontalOrVertical(pc PairCoordinates) bool {
 	return pairIsHorizontal(pc) || pairIsVertical(pc)
 }
@@ -38,26 +59,6 @@ func pairIsHorizontal(pc PairCoordinates) bool {
 
 func pairIsVertical(pc PairCoordinates) bool {
 	return pc.InitCoordinate.Y == pc.EndCoordinate.Y
-}
-
-func buildRepresentation(pc []PairCoordinates) map[Coordinate]int {
-	representation := make(map[Coordinate]int)
-
-	for _, pair := range pc {
-		if pairIsHorizontalOrVertical(pair) {
-			treatPair(pair, representation)
-		}
-	}
-
-	return representation
-}
-
-func treatPair(p PairCoordinates, representation map[Coordinate]int) {
-	if pairIsHorizontal(p) {
-		buildHorizontalLine(p.InitCoordinate, p.EndCoordinate, representation)
-	} else {
-		buildVerticalLine(p.InitCoordinate, p.EndCoordinate, representation)
-	}
 }
 
 func buildVerticalLine(initCoordinate Coordinate, endCoordinate Coordinate, representation map[Coordinate]int) {
@@ -90,3 +91,8 @@ func getStartAndEnd(x1, x2 int) (start int, end int) {
 	}
 	return x2, x1
 }
+
+// 1, 1 -> 3, 3
+// 1,1 	2,2		3,3
+
+// 9,7 ->
